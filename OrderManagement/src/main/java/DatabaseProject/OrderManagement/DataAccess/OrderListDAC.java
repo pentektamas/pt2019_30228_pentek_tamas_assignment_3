@@ -11,7 +11,9 @@ public class OrderListDAC extends AbstractDAC<OrderList> {
 		StringBuilder string = new StringBuilder();
 		string.append("INSERT INTO ");
 		string.append(getType().getSimpleName());
+		string.append("(IDOrder,IDProduct,product_price,quantity)");
 		string.append(" VALUES(?, ?, ?, ?);");
+		System.out.println("SAFGDGG: " + string.toString());
 		return string.toString();
 	}
 
@@ -24,7 +26,7 @@ public class OrderListDAC extends AbstractDAC<OrderList> {
 		return string.toString();
 	}
 
-	public void insert(int ID, int IDProduct, int quantity, int price) {
+	public void insert(int ID, int IDProduct, int price, int quantity) {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		int result = 0;
@@ -34,14 +36,14 @@ public class OrderListDAC extends AbstractDAC<OrderList> {
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, ID);
 			statement.setInt(2, IDProduct);
-			statement.setInt(3, quantity);
-			statement.setInt(4, price);
+			statement.setInt(3, price);
+			statement.setInt(4, quantity);
+			// statement.setInt(5, total);
 			result = statement.executeUpdate();
 			System.out.println("INSERT OrderList: " + result);
-		} catch (SQLIntegrityConstraintViolationException exception) {
 			System.out.println("Error OrderList! Duplicate entry for PRIMARY KEY on INSERT");
 		} catch (SQLException ex) {
-			System.out.println("Error findByID");
+			System.out.println("Error fidfdasgdgagdsgdndByID");
 			ex.printStackTrace();
 		} finally {
 			System.out.println("SFAFSFSAA");

@@ -3,12 +3,6 @@ package DatabaseProject.OrderManagement.Main;
 import java.sql.*;
 import java.util.List;
 
-import DatabaseProject.OrderManagement.DataAccess.ClientDAC;
-import DatabaseProject.OrderManagement.DataAccess.CompanyOrderDAC;
-import DatabaseProject.OrderManagement.DataAccess.OrderListDAC;
-import DatabaseProject.OrderManagement.DataAccess.ProductDAC;
-import DatabaseProject.OrderManagement.Model.Client;
-import DatabaseProject.OrderManagement.Model.Product;
 import DatabaseProject.OrderManagement.Presentation.ClientWindow;
 import DatabaseProject.OrderManagement.Presentation.OrderWindow;
 import DatabaseProject.OrderManagement.Presentation.ProductWindow;

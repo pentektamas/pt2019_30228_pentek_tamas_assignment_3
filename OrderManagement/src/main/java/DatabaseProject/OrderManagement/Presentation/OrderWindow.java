@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.*;
 
 import DatabaseProject.OrderManagement.BusinessLayer.ProductOrder;
+import DatabaseProject.OrderManagement.DataAccess.OrderListDAC;
 
 public class OrderWindow extends JFrame {
 
@@ -29,9 +30,11 @@ public class OrderWindow extends JFrame {
 	JPanel p10 = new JPanel();
 	List<JTextField> textfields = new ArrayList<JTextField>();
 	List<JComboBox> comboboxes = new ArrayList<JComboBox>();
+	List<Integer> prices=new ArrayList<Integer>();
 	List<Integer> currentStock = new ArrayList<Integer>();
 	String clientName;
 	ProductOrder po = new ProductOrder();
+
 	boolean stockFlag = false;
 
 	public OrderWindow() {
@@ -157,23 +160,46 @@ public class OrderWindow extends JFrame {
 	}
 
 	public void addFinishListener() {
-		// ProductOrder po=new ProductOrder();
 		finish.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
 				dataCheck();
 				if (stockFlag == true)
 					return;
+				int OrderId = po.generateIDOrder();
+				System.out.println("ORDERID:=" + OrderId);
+				clientName = (String) clients.getSelectedItem();
+				int index = clientName.indexOf(' ');
+				String firstName = clientName.substring(0, index);
+				System.out.println("Split:" + firstName);
+				int IDClient = po.getIDClient(firstName);
+				System.out.println("IDCLIENT " + IDClient);
+				po.addOrder(OrderId, IDClient, "Card", "2019-04-16");
 				for (int i = 0; i < textfields.size(); i++) {
 					int newValue = currentStock.get(i) - Integer.parseInt(textfields.get(i).getText());
 					int rez = po.updateStock(newValue, (String) comboboxes.get(i).getSelectedItem());
-					if (rez != 1)
+					if (rez != 1) {
 						OrderWindow.displayBadMessage("UPDATE FAILED");
-					System.out.println("NEW VALUE: " + newValue);
+						return;
+					}
 
+					System.out.println("NEW VALUE: " + newValue);
 				}
-				clientName = (String) clients.getSelectedItem();
-				System.out.println("CLIENT: " + clientName);
+
+				for (int j = 0; j < textfields.size(); j++) {
+					OrderListDAC olDAC = new OrderListDAC();
+					Integer ID = 0;
+					Integer price = 0;
+					ID = po.getID((String) comboboxes.get(j).getSelectedItem());
+					price = po.getprice((String) comboboxes.get(j).getSelectedItem());
+					prices.add(price);
+					System.out.println("Price: " + price + " ID: " + ID);
+					olDAC.insert(OrderId, ID, price, Integer.parseInt(textfields.get(j).getText()));
+				}
+
+				po.createBill(clientName, comboboxes, textfields,prices);
+				mai trebuie la BILL: Total de platit, cash sau card==asta trebuie si la OrderWindow!
+				OrderWindow.displayGoodMessage("Order Completed Successfully!\n Bill Created!");
 			}
 
 		});

@@ -16,12 +16,20 @@ public class ClientDAC extends AbstractDAC<Client> {
 		string.append(" VALUES(?, ?, ?, ?, ?, ?, ?);");
 		return string.toString();
 	}
-	
-	public String getName() {
+
+	private String getName() {
 		StringBuilder string = new StringBuilder();
 		string.append("SELECT first_name,last_name FROM ");
 		string.append(getType().getSimpleName());
 		string.append(";");
+		return string.toString();
+	}
+
+	private String getID() {
+		StringBuilder string = new StringBuilder();
+		string.append("SELECT IDClient FROM ");
+		string.append(getType().getSimpleName());
+		string.append(" WHERE first_name=?");
 		return string.toString();
 	}
 
@@ -87,6 +95,31 @@ public class ClientDAC extends AbstractDAC<Client> {
 			DBConnection.close(resultSet);
 		}
 		return clientsName;
+	}
+
+	public int getClientID(String name) {
+		int ID = 0;
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		String query = getID();
+		connection = DBConnection.getConnection();
+		try {
+			statement = connection.prepareStatement(query);
+			statement.setString(1, name);
+			resultSet = statement.executeQuery();
+			resultSet.next();
+			ID = resultSet.getInt("IDClient");
+		} catch (SQLIntegrityConstraintViolationException exception) {
+			System.out.println("Error! name ");
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			DBConnection.close(connection);
+			DBConnection.close(statement);
+			DBConnection.close(resultSet);
+		}
+		return ID;
 	}
 
 }

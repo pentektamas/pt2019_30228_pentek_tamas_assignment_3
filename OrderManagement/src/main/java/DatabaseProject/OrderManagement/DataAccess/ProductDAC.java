@@ -31,6 +31,22 @@ public class ProductDAC extends AbstractDAC<Product> {
 		return string.toString();
 	}
 
+	private String getByNameID() {
+		StringBuilder string = new StringBuilder();
+		string.append("SELECT IDProduct FROM ");
+		string.append(getType().getSimpleName());
+		string.append(" WHERE name= ?");
+		return string.toString();
+	}
+	
+	private String getByNamesPrice() {
+		StringBuilder string = new StringBuilder();
+		string.append("SELECT price FROM ");
+		string.append(getType().getSimpleName());
+		string.append(" WHERE name= ?");
+		return string.toString();
+	}
+
 	private String getStock() {
 		StringBuilder string = new StringBuilder();
 		string.append("SELECT stock FROM ");
@@ -104,6 +120,56 @@ public class ProductDAC extends AbstractDAC<Product> {
 			DBConnection.close(resultSet);
 		}
 		return productsName;
+	}
+
+	public int getByNamesID(String name) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		String query = getByNameID();
+		int ID=0;
+		connection = DBConnection.getConnection();
+		try {
+			statement = connection.prepareStatement(query);
+			statement.setString(1, name);
+			resultSet = statement.executeQuery();
+			resultSet.next();
+			ID = resultSet.getInt("IDProduct");
+		} catch (SQLIntegrityConstraintViolationException exception) {
+			System.out.println("Error! Duplicate entry for PRIMARY KEY on INSERT");
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			DBConnection.close(connection);
+			DBConnection.close(statement);
+			DBConnection.close(resultSet);
+		}
+		return ID;
+	}
+	
+	public int getByNamesPrice(String name) {
+		Connection connection = null;
+		PreparedStatement statement = null;
+		ResultSet resultSet = null;
+		String query = getByNamesPrice();
+		int price=0;
+		connection = DBConnection.getConnection();
+		try {
+			statement = connection.prepareStatement(query);
+			statement.setString(1, name);
+			resultSet = statement.executeQuery();
+			resultSet.next();
+			price = resultSet.getInt("price");
+		} catch (SQLIntegrityConstraintViolationException exception) {
+			System.out.println("Error! Duplicate entry for PRIMARY KEY on INSERT");
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} finally {
+			DBConnection.close(connection);
+			DBConnection.close(statement);
+			DBConnection.close(resultSet);
+		}
+		return price;
 	}
 
 	public int getStockNr(String name) {

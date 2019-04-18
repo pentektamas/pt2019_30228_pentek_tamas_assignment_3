@@ -1,0 +1,14 @@
+			BILL
+
+OrderManagement Company			Racovita Tudor
+Washington DC, Broadway 12		Client's Address
+
+
+Product name		Quantity	Price	Total
+
+Faina			   2		 2	 4
+
+Ciocolata Milka		   5		 4	 20
+
+Suc de portocale	   12		 10	 120
+
