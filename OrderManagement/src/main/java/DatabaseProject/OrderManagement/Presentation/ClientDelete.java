@@ -42,20 +42,15 @@ public class ClientDelete extends JPanel {
 		ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ClientOperation clientOp = new ClientOperation();
-				// ClientDAC cd = new ClientDAC();
-				// Client c = new Client();
-				// c.setIDClient(123);
-				// cd.retrieveProperties();
-				// cd.retrievePropertiesValues(c);
 				try {
 					String condition = conditionText.getText();
 					int rez = clientOp.deleteClient(condition);
 					if (rez != -1)
-						MainWindow.displayGoodMessage("Deleted Successfully " + rez + " Field(s)!");
+						MainWindow.displayGoodMessage("Client Operation", "Deleted Successfully " + rez + " Field(s)!");
 					else
-						MainWindow.displayBadMessage("Something Went Wrong!");
+						MainWindow.displayBadMessage("Client Operation", "Something Went Wrong!");
 				} catch (NumberFormatException ex) {
-					MainWindow.displayBadMessage("Please insert correct values!!!");
+					MainWindow.displayBadMessage("Client Operation", "Please insert correct values!!!");
 				}
 			}
 		});

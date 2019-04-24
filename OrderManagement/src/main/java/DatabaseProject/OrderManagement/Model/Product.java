@@ -13,9 +13,6 @@ public class Product {
 	private int price;
 	private int stock;
 
-	/**
-	 * Metode getter si setter pentru a accesa si a seta datele
-	 */
 	public int getIDProduct() {
 		return IDProduct;
 	}

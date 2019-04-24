@@ -62,11 +62,12 @@ public class ProductEdit extends JPanel {
 					String condition = conditionText.getText();
 					int rez = productOp.editProduct(column, value, condition);
 					if (rez != -1)
-						MainWindow.displayGoodMessage("Updated Successfully " + rez + " Field(s)!");
+						MainWindow.displayGoodMessage("Product Operation",
+								"Updated Successfully " + rez + " Field(s)!");
 					else
-						MainWindow.displayBadMessage("Something Went Wrong!");
+						MainWindow.displayBadMessage("Product Operation", "Something Went Wrong!");
 				} catch (NumberFormatException ex) {
-					MainWindow.displayBadMessage("Please insert correct values!!!");
+					MainWindow.displayBadMessage("Product Operation", "Please insert correct values!!!");
 				}
 			}
 		});

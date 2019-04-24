@@ -15,6 +15,5 @@ public class MainClass {
 	public static void main(String[] args) throws SQLException {
 		MainWindow mw = new MainWindow();
 		mw.setVisible(true);
-
 	}
 }

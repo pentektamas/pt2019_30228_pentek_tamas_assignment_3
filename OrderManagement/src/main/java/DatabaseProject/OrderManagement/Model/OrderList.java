@@ -15,9 +15,6 @@ public class OrderList {
 	private int quantity;
 	private int price;
 
-	/**
-	 * Metode getter si setter pentru a accesa si a seta datele
-	 */
 	public int getIDOrder() {
 		return IDOrder;
 	}

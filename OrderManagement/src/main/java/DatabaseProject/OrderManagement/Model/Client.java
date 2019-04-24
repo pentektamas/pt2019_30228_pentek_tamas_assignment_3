@@ -17,10 +17,6 @@ public class Client {
 	private String iban;
 	private String email_address;
 
-	/**
-	 * 
-	 * Metode getter si setter pentru a accesa si a seta datele
-	 */
 	public int getIDClient() {
 		return IDClient;
 	}

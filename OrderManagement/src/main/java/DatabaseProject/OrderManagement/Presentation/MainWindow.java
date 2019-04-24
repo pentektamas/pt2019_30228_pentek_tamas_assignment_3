@@ -3,14 +3,13 @@ package DatabaseProject.OrderManagement.Presentation;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
-import DatabaseProject.OrderManagement.DataAccess.AbstractDAC;
+import DatabaseProject.OrderManagement.DataAccess.ClientDAC;
+import DatabaseProject.OrderManagement.DataAccess.ProductDAC;
+import DatabaseProject.OrderManagement.Model.Client;
+import DatabaseProject.OrderManagement.Model.Product;
 
 /**
  * 
@@ -91,58 +90,63 @@ public class MainWindow extends JFrame {
 	}
 
 	/**
-	 * KSDJG:DKDSLGJSDO:GJDLGKNDALKGJADKNV
-	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 * ?????????????????????????????????????????????????
-	 * ?????????????????????????????????????????????????
+	 * Metoda creeaza o clasa din date primite ca si argument
 	 * 
-	 * @param values
-	 * @return
-	 * @throws IllegalAccessException
-	 * @throws IllegalArgumentException
-	 * @throws InvocationTargetException
-	 * @throws IntrospectionException
+	 * @param values este o lista care contine datele tabelului
+	 * @return tabelul creat
 	 */
-	public static <T> JTable createTable(List<T> values)
-			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, IntrospectionException {
-		AbstractDAC<Object> aDAC = new AbstractDAC<Object>();
-		List<String> headers = aDAC.retrieveProperties();
-		String[] columnNames = (String[]) headers.toArray();
+	public static <T> JTable createTable(List<T> values) {
+		List<String> headers = new ArrayList<String>();
+		List<String> ok = new ArrayList<String>();
+		Object[][] object = null;
+		Object[] columnNames = null;
+		Object obj = values.get(0);
+		if (obj instanceof Client) {
+			ClientDAC cDAC = new ClientDAC();
+			headers = cDAC.retrieveProperties();
+			columnNames = headers.toArray();
+			object = new Object[values.size()][headers.size()];
+			for (int i = 0; i < values.size(); i++) {
+				ok = cDAC.retrievePropertiesValues((Client) values.get(i));
+				for (int j = 0; j < headers.size(); j++) {
+					object[i][j] = ok.get(j);
+				}
+			}
+		}
 
-		Object element = new Object();
-		Object[][] object = new Object[values.size()][headers.size()];
-		for (int i = 0; i < values.size(); i++) {
-			// element=aDAC.retrievePropertiesValues(values.get(i));
-			for (Field f : object.getClass().getDeclaredFields()) {
-				int j = 0;
-				PropertyDescriptor propertyDescriptor = new PropertyDescriptor(f.getName(), object.getClass());
-				Method method = propertyDescriptor.getReadMethod();
-				object[i][j++] = method.invoke(element);
-				System.out.println("EL: " + object[i][j++] + "");
+		if (obj instanceof Product) {
+			ProductDAC pDAC = new ProductDAC();
+			headers = pDAC.retrieveProperties();
+			columnNames = headers.toArray();
+			object = new Object[values.size()][headers.size()];
+			for (int i = 0; i < values.size(); i++) {
+				ok = pDAC.retrievePropertiesValues((Product) values.get(i));
+				for (int j = 0; j < headers.size(); j++) {
+					object[i][j] = ok.get(j);
+				}
 			}
 		}
 		JTable table = new JTable(object, columnNames);
-		// scrollPane = new JScrollPane(table);
-		// scrollPane.setPreferredSize(new Dimension(780, 400));
 		return table;
 	}
 
 	/**
 	 * Metoda afiseaza un JOptionPane de informare cu mesajul dorit
 	 * 
-	 * @param message este mesajul
+	 * @param type    este tipul operatiei
+	 * @param message este mesajul care va fi afisat
 	 */
-	public static void displayGoodMessage(String message) {
-		JOptionPane.showMessageDialog(null, message, "Order Operation", JOptionPane.INFORMATION_MESSAGE);
+	public static void displayGoodMessage(String type, String message) {
+		JOptionPane.showMessageDialog(null, message, type, JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	/**
 	 * Metoda afiseaza un JOptionPane de eroare cu mesajul dorit
 	 * 
-	 * @param message este mesajul
+	 * @param type    este tipul operatiei
+	 * @param message este mesajul care va fi afisat
 	 */
-	public static void displayBadMessage(String message) {
-		JOptionPane.showMessageDialog(null, message, "Order Operation", JOptionPane.ERROR_MESSAGE);
+	public static void displayBadMessage(String type, String message) {
+		JOptionPane.showMessageDialog(null, message, type, JOptionPane.ERROR_MESSAGE);
 	}
 }

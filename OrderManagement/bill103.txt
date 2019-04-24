@@ -1,0 +1,19 @@
+			BILL
+
+OrderManagement Company			SC RomFood
+Washington DC, Broadway 12		Client's Address
+
+
+Product name		Quantity	Price	Total
+
+Lapte			   5		 5	 25
+
+Cascaval afumat		   10		 15	 150
+
+Suc de portocale	   20		 10	 200
+
+
+
+				Paid with: Credit card
+
+				Total amount: 375 RON

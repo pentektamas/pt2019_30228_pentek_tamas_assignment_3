@@ -14,9 +14,6 @@ public class CompanyOrder {
 	private String payment_type;
 	private String date;
 
-	/**
-	 * Metode getter si setter pentru a accesa si a seta datele
-	 */
 	public int getIDOrder() {
 		return IDOrder;
 	}

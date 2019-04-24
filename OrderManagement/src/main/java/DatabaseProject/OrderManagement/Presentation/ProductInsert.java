@@ -74,11 +74,12 @@ public class ProductInsert extends JPanel {
 					product.setStock(Integer.parseInt(priceText.getText()));
 					int rez = productOp.addProduct(product);
 					if (rez == 1)
-						MainWindow.displayGoodMessage("New Product Inserted Successfully!");
+						MainWindow.displayGoodMessage("Product Operation", "New Product Inserted Successfully!");
 					else
-						MainWindow.displayBadMessage("Something Went Wrong! Possibly duplicate values!");
+						MainWindow.displayBadMessage("Product Operation",
+								"Something Went Wrong! Possibly duplicate values!");
 				} catch (NumberFormatException ex) {
-					MainWindow.displayBadMessage("Please insert correct values!!!");
+					MainWindow.displayBadMessage("Product Operation", "Please insert correct values!!!");
 				}
 			}
 		});

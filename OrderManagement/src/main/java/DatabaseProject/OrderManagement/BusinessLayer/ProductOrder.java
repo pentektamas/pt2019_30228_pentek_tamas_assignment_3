@@ -95,11 +95,9 @@ public class ProductOrder {
 	 * @return data comenzii
 	 */
 	public String getDate() {
-		// ProductDAC pDAC = new ProductDAC();
 		CompanyOrderDAC coDAC = new CompanyOrderDAC();
-		String rez2 = coDAC.getDate();
-		// String rez = pDAC.getDate();
-		return rez2;
+		String rez = coDAC.getDate();
+		return rez;
 	}
 
 	/**

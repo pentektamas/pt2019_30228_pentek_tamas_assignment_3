@@ -90,9 +90,4 @@ public class ClientOperation {
 		fields = clientData.retrieveProperties();
 		return fields;
 	}
-
-	/*
-	 * public Client getFieldsValues(Client client) { Client value = new Client();
-	 * value = clientData.retrievePropertiesValues(client); return value; }
-	 */
 }

@@ -46,11 +46,12 @@ public class ProductDelete extends JPanel {
 					String condition = conditionText.getText();
 					int rez = productOp.deleteProduct(condition);
 					if (rez != -1)
-						MainWindow.displayGoodMessage("Deleted Successfully " + rez + " Field(s)!");
+						MainWindow.displayGoodMessage("Product Operation",
+								"Deleted Successfully " + rez + " Field(s)!");
 					else
-						MainWindow.displayBadMessage("Something Went Wrong!");
+						MainWindow.displayBadMessage("Product Operation", "Something Went Wrong!");
 				} catch (NumberFormatException ex) {
-					MainWindow.displayBadMessage("Please insert correct values!!!");
+					MainWindow.displayBadMessage("Product Operation", "Please insert correct values!!!");
 				}
 			}
 		});

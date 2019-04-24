@@ -44,7 +44,6 @@ public class OrderWindow extends JFrame {
 	List<Integer> currentStock = new ArrayList<Integer>();
 	String clientName;
 	ProductOrder po = new ProductOrder();
-	// boolean stockFlag = false;
 
 	public OrderWindow() {
 		JPanel p = new JPanel();
@@ -139,18 +138,18 @@ public class OrderWindow extends JFrame {
 	public boolean dataCheck() {
 		ProductOrder po2 = new ProductOrder();
 		if (comboboxes.size() == 0) {
-			MainWindow.displayBadMessage("Please introduce at least one product!");
+			MainWindow.displayBadMessage("Order Operation", "Please introduce at least one product!");
 			return true;
 		}
 		for (JComboBox j : comboboxes) {
 			if (j.getSelectedItem() == null) {
-				MainWindow.displayBadMessage("Please introduce a product!");
+				MainWindow.displayBadMessage("Order Operation", "Please introduce a product!");
 				return true;
 			}
 		}
 		for (JTextField tf : textfields) {
 			if (tf.getText() == null || tf.getText().equals("")) {
-				MainWindow.displayBadMessage("Please introduce a quantity!");
+				MainWindow.displayBadMessage("Order Operation", "Please introduce a quantity!");
 				return true;
 			}
 		}
@@ -159,9 +158,8 @@ public class OrderWindow extends JFrame {
 			int rez = po2.getStock((String) comboboxes.get(i).getSelectedItem());
 			currentStock.add(rez);
 			if (rez < Integer.parseInt(textfields.get(i).getText())) {
-				MainWindow.displayBadMessage(
+				MainWindow.displayBadMessage("Order Operation",
 						"Error! We have only " + rez + " '" + comboboxes.get(i).getSelectedItem() + "' on STOCK!");
-				// stockFlag = true;
 				return true;
 			}
 		}
@@ -176,14 +174,12 @@ public class OrderWindow extends JFrame {
 
 			public void actionPerformed(ActionEvent e) {
 				if (clients.getSelectedItem() == null) {
-					MainWindow.displayBadMessage("Please select a CLIENT!");
+					MainWindow.displayBadMessage("Order Operation", "Please select a CLIENT!");
 					return;
 				}
 				boolean rezult = dataCheck();
 				if (rezult == true)
 					return;
-				// if (stockFlag == true)
-				// return;
 				int orderId = po.generateIDOrder();
 				clientName = (String) clients.getSelectedItem();
 				int index = clientName.indexOf(' ');
@@ -196,7 +192,7 @@ public class OrderWindow extends JFrame {
 					payment = card.getText();
 				String date = po.getDate();
 				if (payment == null) {
-					MainWindow.displayBadMessage("Error! Payment type UNSELECTED!");
+					MainWindow.displayBadMessage("Order Operation", "Error! Payment type UNSELECTED!");
 					return;
 
 				}
@@ -205,7 +201,7 @@ public class OrderWindow extends JFrame {
 					int newValue = currentStock.get(i) - Integer.parseInt(textfields.get(i).getText());
 					int rez = po.updateStock(newValue, (String) comboboxes.get(i).getSelectedItem());
 					if (rez != 1) {
-						MainWindow.displayBadMessage("UPDATE FAILED");
+						MainWindow.displayBadMessage("Order Operation", "UPDATE FAILED");
 						return;
 					}
 				}
@@ -219,9 +215,8 @@ public class OrderWindow extends JFrame {
 					prices.add(price);
 					olDAC.insert(orderId, ID, price, Integer.parseInt(textfields.get(j).getText()));
 				}
-
 				po.createBill(clientName, comboboxes, textfields, prices, payment, orderId);
-				MainWindow.displayGoodMessage("Order Completed Successfully!\n Bill Created!");
+				MainWindow.displayGoodMessage("Order Operation", "Order Completed Successfully!\n Bill Created!");
 				prices.clear();
 				currentStock.clear();
 			}

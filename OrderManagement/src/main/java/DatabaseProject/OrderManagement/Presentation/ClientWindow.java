@@ -51,6 +51,8 @@ public class ClientWindow extends JFrame {
 		this.setContentPane(p1);
 		this.setSize(new Dimension(800, 400));
 		this.setLocation(500, 200);
+		// this.setDefaultCloseOperation();
+		// this.
 		add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				p1.add(insert, BorderLayout.CENTER);

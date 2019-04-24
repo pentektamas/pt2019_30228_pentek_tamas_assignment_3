@@ -64,11 +64,11 @@ public class ClientEdit extends JPanel {
 					String condition = conditionText.getText();
 					int rez = clientOp.editClient(column, value, condition);
 					if (rez != -1)
-						MainWindow.displayGoodMessage("Updated Successfully " + rez + " Field(s)!");
+						MainWindow.displayGoodMessage("Client Operation", "Updated Successfully " + rez + " Field(s)!");
 					else
-						MainWindow.displayBadMessage("Something Went Wrong!");
+						MainWindow.displayBadMessage("Client Operation", "Something Went Wrong!");
 				} catch (NumberFormatException ex) {
-					MainWindow.displayBadMessage("Please insert correct values!!!");
+					MainWindow.displayBadMessage("Client Operation", "Please insert correct values!!!");
 				}
 			}
 		});

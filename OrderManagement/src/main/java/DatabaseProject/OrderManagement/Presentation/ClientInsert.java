@@ -99,11 +99,12 @@ public class ClientInsert extends JPanel {
 					client.setEmail_address(emailText.getText());
 					int rez = clientOp.addClient(client);
 					if (rez == 1)
-						MainWindow.displayGoodMessage("New Client Inserted Successfully!");
+						MainWindow.displayGoodMessage("Client Operation", "New Client Inserted Successfully!");
 					else
-						MainWindow.displayBadMessage("Something Went Wrong! Possibly duplicate values!");
+						MainWindow.displayBadMessage("Client Operation",
+								"Something Went Wrong! Possibly duplicate values!");
 				} catch (NumberFormatException ex) {
-					MainWindow.displayBadMessage("Please insert correct values!!!");
+					MainWindow.displayBadMessage("Client Operation", "Please insert correct values!!!");
 				}
 			}
 		});

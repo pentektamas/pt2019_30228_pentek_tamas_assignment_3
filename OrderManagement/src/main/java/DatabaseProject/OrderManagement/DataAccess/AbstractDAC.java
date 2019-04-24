@@ -15,7 +15,7 @@ import DatabaseProject.OrderManagement.Connection.DBConnection;
  *         Aceasta clasa este un Data Access Class care salveaza date din baza
  *         de date
  *
- * @param <T> este o clasa din pachetul Model
+ * @param T este o clasa din pachetul Model
  */
 public class AbstractDAC<T> {
 
@@ -27,31 +27,12 @@ public class AbstractDAC<T> {
 		this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 	}
 
-	/**
-	 * metode getter si setter pentru clasa T
-	 */
 	public void setType(Class<T> type) {
 		this.type = type;
 	}
 
 	public Class<T> getType() {
 		return type;
-	}
-
-	/**
-	 * Metoda creeaza un String care va fi o interogare folosita pentru a accesa
-	 * date folosind o conditie
-	 * 
-	 * @param field este numele coloanei
-	 * @return un String care este o interogare
-	 */
-	private String createQuery(String field) {
-		StringBuilder string = new StringBuilder();
-		string.append("SELECT * FROM ");
-		string.append(type.getSimpleName());
-		string.append(" WHERE " + field + " =?;");
-		return string.toString();
-
 	}
 
 	/**
@@ -100,18 +81,6 @@ public class AbstractDAC<T> {
 		string.append(condition + ";");
 		return string.toString();
 	}
-
-	/*
-	 * public T findById(int ID, String field) { Connection connection = null;
-	 * PreparedStatement statement = null; ResultSet resultSet = null; String query
-	 * = createQuery(field); connection = DBConnection.getConnection(); T obj =
-	 * null; try { statement = connection.prepareStatement(query);
-	 * statement.setInt(1, ID); resultSet = statement.executeQuery(); obj =
-	 * createObjects(resultSet).get(0); } catch (SQLException e) {
-	 * System.out.println("Error findByID"); e.printStackTrace(); } finally {
-	 * DBConnection.close(connection); DBConnection.close(statement);
-	 * DBConnection.close(resultSet); } return obj; }
-	 */
 
 	/**
 	 * Metoda salveaza intr-o lista toate datele dintr-un tabel
@@ -203,18 +172,6 @@ public class AbstractDAC<T> {
 			return flag;
 	}
 
-	/*
-	 * public String getDate() { Connection connection = null; PreparedStatement
-	 * statement = null; ResultSet resultSet = null; String query =
-	 * "SELECT current_date;"; String date = null; connection =
-	 * DBConnection.getConnection(); try { statement =
-	 * connection.prepareStatement(query); resultSet = statement.executeQuery();
-	 * resultSet.next(); date = resultSet.getString(1); } catch (SQLException ex) {
-	 * System.out.println("Error DATE"); } finally { DBConnection.close(connection);
-	 * DBConnection.close(statement); DBConnection.close(resultSet); } return date;
-	 * }
-	 */
-
 	/**
 	 * Metoda creeaza obiecte din datele aflate in tabel
 	 * 
@@ -255,18 +212,27 @@ public class AbstractDAC<T> {
 		return fieldsList;
 	}
 
-	/*
-	 * /** Metoda salveaza in fieldurile unui obiect de tip T datele aflate intr-un
-	 * rand din tabel
+	/**
+	 * Metoda salveaza proprietatile a unui obiect intr-o lista de Stringuri
 	 * 
-	 * @param object
-	 * 
-	 * @return un obiect de tip T care contine datele dintr-un rand a tabelului
-	 *
-	 * public T retrievePropertiesValues(T object) { T value = null; for (Field
-	 * field : this.type.getDeclaredFields()) { field.setAccessible(true); try {
-	 * value = (T) field.get(object); } catch (IllegalArgumentException e) {
-	 * e.printStackTrace(); } catch (IllegalAccessException ex) {
-	 * ex.printStackTrace(); } } return value; }
+	 * @param object este obiectul la care vrem sa aflam proprietatile
+	 * @return o lista de Stringuri care contine proprietatile obiectului
 	 */
+	public List<String> retrievePropertiesValues(T object) {
+		T value = null;
+		List<String> val = new ArrayList<String>();
+		for (Field field : object.getClass().getDeclaredFields()) {
+			field.setAccessible(true);
+			try {
+				value = (T) field.get(object);
+				val.add(value + "");
+
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (IllegalAccessException ex) {
+				ex.printStackTrace();
+			}
+		}
+		return val;
+	}
 }

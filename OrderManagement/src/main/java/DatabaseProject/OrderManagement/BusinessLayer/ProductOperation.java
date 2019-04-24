@@ -89,12 +89,4 @@ public class ProductOperation {
 		fields = productData.retrieveProperties();
 		return fields;
 	}
-
-	/*
-	 * public Product getFieldsValues(Product product) { Product value = new
-	 * Product(); value = productData.retrievePropertiesValues(product); return
-	 * value;
-	 * 
-	 * }
-	 */
 }

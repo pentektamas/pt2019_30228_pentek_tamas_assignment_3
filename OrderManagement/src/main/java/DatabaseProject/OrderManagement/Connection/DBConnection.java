@@ -1,7 +1,7 @@
 package DatabaseProject.OrderManagement.Connection;
 
 import java.sql.*;
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 
 /**
  * 
@@ -12,7 +12,6 @@ import java.util.logging.Logger;
  *
  */
 public class DBConnection {
-	private static final Logger LOGGER = Logger.getLogger(DBConnection.class.getName());
 	private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 	private static final String DBURL = "jdbc:mysql://localhost:3306/ordermanagementcompany?useSSL=false";
 	// SET GLOBAL time_zone = '+2:00';
