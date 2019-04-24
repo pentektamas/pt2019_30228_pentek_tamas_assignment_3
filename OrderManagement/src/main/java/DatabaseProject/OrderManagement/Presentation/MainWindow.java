@@ -90,7 +90,7 @@ public class MainWindow extends JFrame {
 	}
 
 	/**
-	 * Metoda creeaza o clasa din date primite ca si argument
+	 * Metoda creeaza un tabel din date primite ca si argument
 	 * 
 	 * @param values este o lista care contine datele tabelului
 	 * @return tabelul creat

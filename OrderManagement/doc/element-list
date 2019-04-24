@@ -1,0 +1,6 @@
+DatabaseProject.OrderManagement.BusinessLayer
+DatabaseProject.OrderManagement.Connection
+DatabaseProject.OrderManagement.DataAccess
+DatabaseProject.OrderManagement.Main
+DatabaseProject.OrderManagement.Model
+DatabaseProject.OrderManagement.Presentation
