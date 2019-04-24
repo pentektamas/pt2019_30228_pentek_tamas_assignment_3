@@ -1,11 +1,21 @@
 package DatabaseProject.OrderManagement.Model;
 
+/**
+ * 
+ * @author Pentek Tamas
+ * 
+ *         Clasa reprezinta un rand din tabelul Product
+ *
+ */
 public class Product {
 	private int IDProduct;
 	private String name;
 	private int price;
 	private int stock;
 
+	/**
+	 * Metode getter si setter pentru a accesa si a seta datele
+	 */
 	public int getIDProduct() {
 		return IDProduct;
 	}
@@ -36,10 +46,6 @@ public class Product {
 
 	public void setStock(int stock) {
 		this.stock = stock;
-	}
-
-	public String toString() {
-		return "PRODUCT: " + this.IDProduct + " NAME: " + this.name + " PRICE: " + this.price + " STOCK: " + this.stock;
 	}
 
 }

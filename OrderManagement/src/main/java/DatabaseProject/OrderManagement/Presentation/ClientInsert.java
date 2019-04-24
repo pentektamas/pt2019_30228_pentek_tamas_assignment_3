@@ -4,12 +4,18 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.*;
-
 import DatabaseProject.OrderManagement.BusinessLayer.ClientOperation;
 import DatabaseProject.OrderManagement.Model.Client;
 
+/**
+ * 
+ * @author Pentek Tamas
+ * 
+ *         Aceasta clasa extinde clasa JPanel, creeaza un panel care este
+ *         folosit cand inseram un nou client
+ *
+ */
 public class ClientInsert extends JPanel {
 
 	private JLabel ID = new JLabel("ID Client:            ");
@@ -61,7 +67,7 @@ public class ClientInsert extends JPanel {
 		p7.add(email);
 		p7.add(emailText);
 		p8.add(ok);
-		JPanel p = new JPanel();
+//		JPanel p = new JPanel();
 		this.setLayout(layout);
 		this.add(p0);
 		this.add(p1);
@@ -75,6 +81,9 @@ public class ClientInsert extends JPanel {
 		this.addOKListener();
 	}
 
+	/**
+	 * Metoda adauga un listener la butonul OK
+	 */
 	public void addOKListener() {
 		ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -90,13 +99,12 @@ public class ClientInsert extends JPanel {
 					client.setEmail_address(emailText.getText());
 					int rez = clientOp.addClient(client);
 					if (rez == 1)
-						ClientWindow.displayGoodMessage("New Client Inserted Successfully!");
+						MainWindow.displayGoodMessage("New Client Inserted Successfully!");
 					else
-						ClientWindow.displayBadMessage("Something Went Wrong! Possibly duplicate values!");
+						MainWindow.displayBadMessage("Something Went Wrong! Possibly duplicate values!");
 				} catch (NumberFormatException ex) {
-					ClientWindow.displayBadMessage("Please insert correct values!!!");
+					MainWindow.displayBadMessage("Please insert correct values!!!");
 				}
-
 			}
 		});
 	}

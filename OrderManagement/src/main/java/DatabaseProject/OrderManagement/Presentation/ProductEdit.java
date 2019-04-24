@@ -4,15 +4,17 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
+import javax.swing.*;
 import DatabaseProject.OrderManagement.BusinessLayer.ProductOperation;
 
+/**
+ * 
+ * @author Pentek Tamas
+ * 
+ *         Aceasta clasa extinde clasa JPanel, creeaza un panel care este
+ *         folosit cand actualizam produsele
+ *
+ */
 public class ProductEdit extends JPanel {
 	private JLabel column = new JLabel("Select a column: ");
 	String[] columnNames = new String[] { "IDProduct", "Name", "Price", "Stock" };
@@ -47,6 +49,9 @@ public class ProductEdit extends JPanel {
 		this.addOKListener();
 	}
 
+	/**
+	 * Metoda adauga un listener la butonul OK
+	 */
 	public void addOKListener() {
 		ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -57,11 +62,11 @@ public class ProductEdit extends JPanel {
 					String condition = conditionText.getText();
 					int rez = productOp.editProduct(column, value, condition);
 					if (rez != -1)
-						ClientWindow.displayGoodMessage("Updated Successfully " + rez + " Field(s)!");
+						MainWindow.displayGoodMessage("Updated Successfully " + rez + " Field(s)!");
 					else
-						ClientWindow.displayBadMessage("Something Went Wrong!");
+						MainWindow.displayBadMessage("Something Went Wrong!");
 				} catch (NumberFormatException ex) {
-					ClientWindow.displayBadMessage("Please insert correct values!!!");
+					MainWindow.displayBadMessage("Please insert correct values!!!");
 				}
 			}
 		});

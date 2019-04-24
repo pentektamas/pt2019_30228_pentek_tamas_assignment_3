@@ -1,5 +1,12 @@
 package DatabaseProject.OrderManagement.Model;
 
+/**
+ * 
+ * @author Pentek Tamas
+ * 
+ *         Clasa reprezinta un rand din tabelul Companyorder
+ *
+ */
 public class CompanyOrder {
 
 	private int IDOrder;
@@ -7,6 +14,9 @@ public class CompanyOrder {
 	private String payment_type;
 	private String date;
 
+	/**
+	 * Metode getter si setter pentru a accesa si a seta datele
+	 */
 	public int getIDOrder() {
 		return IDOrder;
 	}

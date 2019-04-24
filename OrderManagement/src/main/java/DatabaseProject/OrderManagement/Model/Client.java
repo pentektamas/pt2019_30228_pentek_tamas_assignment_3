@@ -1,5 +1,12 @@
 package DatabaseProject.OrderManagement.Model;
 
+/**
+ * 
+ * @author Pentek Tamas
+ * 
+ *         Clasa reprezinta un rand din tabelul Client
+ *
+ */
 public class Client {
 
 	private int IDClient;
@@ -10,6 +17,10 @@ public class Client {
 	private String iban;
 	private String email_address;
 
+	/**
+	 * 
+	 * Metode getter si setter pentru a accesa si a seta datele
+	 */
 	public int getIDClient() {
 		return IDClient;
 	}
@@ -64,12 +75,6 @@ public class Client {
 
 	public void setEmail_address(String email_address) {
 		this.email_address = email_address;
-	}
-
-	public String toString() {
-		return "CLIENT:" + this.IDClient + " NUME: " + this.first_name + " " + this.last_name + " ADDRESS: "
-				+ this.address + " PHONE: " + this.phone_number + " IBAN: " + this.iban + " EMAIL: "
-				+ this.email_address;
 	}
 
 }

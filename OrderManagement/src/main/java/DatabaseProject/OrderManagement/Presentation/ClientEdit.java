@@ -4,11 +4,17 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.*;
-
 import DatabaseProject.OrderManagement.BusinessLayer.ClientOperation;
 
+/**
+ * 
+ * @author Pentek Tamas
+ * 
+ *         Aceasta clasa extinde clasa JPanel, creeaza un panel care este
+ *         folosit cand actualizam clientii
+ *
+ */
 public class ClientEdit extends JPanel {
 
 	private JLabel column = new JLabel("Select a column: ");
@@ -45,6 +51,9 @@ public class ClientEdit extends JPanel {
 		this.addOKListener();
 	}
 
+	/**
+	 * Metoda adauga un listener la butonul OK
+	 */
 	public void addOKListener() {
 		ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -55,11 +64,11 @@ public class ClientEdit extends JPanel {
 					String condition = conditionText.getText();
 					int rez = clientOp.editClient(column, value, condition);
 					if (rez != -1)
-						ClientWindow.displayGoodMessage("Updated Successfully " + rez + " Field(s)!");
+						MainWindow.displayGoodMessage("Updated Successfully " + rez + " Field(s)!");
 					else
-						ClientWindow.displayBadMessage("Something Went Wrong!");
+						MainWindow.displayBadMessage("Something Went Wrong!");
 				} catch (NumberFormatException ex) {
-					ClientWindow.displayBadMessage("Please insert correct values!!!");
+					MainWindow.displayBadMessage("Please insert correct values!!!");
 				}
 			}
 		});

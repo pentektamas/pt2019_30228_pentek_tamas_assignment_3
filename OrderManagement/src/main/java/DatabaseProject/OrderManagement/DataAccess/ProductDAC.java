@@ -7,8 +7,20 @@ import java.util.List;
 import DatabaseProject.OrderManagement.Connection.DBConnection;
 import DatabaseProject.OrderManagement.Model.Product;
 
+/**
+ * @author Pentek Tamas
+ * 
+ *         Clasa extinde clasa AbstractDAC, este un Data Access Class, in
+ *         aceasta clasa se afla metode folosite la tabelul Product
+ *
+ */
 public class ProductDAC extends AbstractDAC<Product> {
 
+	/**
+	 * Metoda creeaza un String care va fi o inserare in tabelul Product
+	 * 
+	 * @return un String care este o inserare
+	 */
 	private String insertInto() {
 		StringBuilder string = new StringBuilder();
 		string.append("INSERT INTO ");
@@ -17,12 +29,12 @@ public class ProductDAC extends AbstractDAC<Product> {
 		return string.toString();
 	}
 
-	/*
-	 * private String getProductsList() { StringBuilder string = new
-	 * StringBuilder(); string.append("SELECT name, quantity FROM");
-	 * string.append(getType().getSimpleName()); return string.toString(); }
+	/**
+	 * Metoda creeaza un String care va fi o interogare folosite pentru a accesa
+	 * numele de produse
+	 * 
+	 * @return un String care este o interogare
 	 */
-
 	private String getName() {
 		StringBuilder string = new StringBuilder();
 		string.append("SELECT name FROM ");
@@ -31,6 +43,12 @@ public class ProductDAC extends AbstractDAC<Product> {
 		return string.toString();
 	}
 
+	/**
+	 * Metoda creeaza un String care va fi o interogare folosite pentru a accesa ID
+	 * de produs dupa nume de produs
+	 * 
+	 * @return un String care este o interogare
+	 */
 	private String getByNameID() {
 		StringBuilder string = new StringBuilder();
 		string.append("SELECT IDProduct FROM ");
@@ -38,7 +56,13 @@ public class ProductDAC extends AbstractDAC<Product> {
 		string.append(" WHERE name= ?");
 		return string.toString();
 	}
-	
+
+	/**
+	 * Metoda creeaza un String care va fi o interogare folosite pentru a accesa
+	 * pretul dupa nume de produs
+	 * 
+	 * @return un String care este o interogare
+	 */
 	private String getByNamesPrice() {
 		StringBuilder string = new StringBuilder();
 		string.append("SELECT price FROM ");
@@ -47,6 +71,12 @@ public class ProductDAC extends AbstractDAC<Product> {
 		return string.toString();
 	}
 
+	/**
+	 * Metoda creeaza un String care va fi o interogare folosite pentru a accesa
+	 * numarul de produse dupa nume de produs
+	 * 
+	 * @return un String care este o interogare
+	 */
 	private String getStock() {
 		StringBuilder string = new StringBuilder();
 		string.append("SELECT stock FROM ");
@@ -56,6 +86,11 @@ public class ProductDAC extends AbstractDAC<Product> {
 		return string.toString();
 	}
 
+	/**
+	 * Metoda creeaza un String care va fi o actualizare a tabelului Product
+	 * 
+	 * @return un String care este o actualizare
+	 */
 	private String updateStock() {
 		StringBuilder string = new StringBuilder();
 		string.append("UPDATE ");
@@ -65,6 +100,15 @@ public class ProductDAC extends AbstractDAC<Product> {
 		return string.toString();
 	}
 
+	/**
+	 * Metoda se face o inserare in tabelul Product
+	 * 
+	 * @param ID    este ID de product
+	 * @param name  este numele produsului
+	 * @param price este pretul produsului
+	 * @param stock este cantitatea produsului
+	 * @return true, daca inserarea s-a efectuat cu succes, false altfel
+	 */
 	public boolean insert(int ID, String name, int price, int stock) {
 		boolean ok = false;
 		Connection connection = null;
@@ -81,20 +125,22 @@ public class ProductDAC extends AbstractDAC<Product> {
 			result = statement.executeUpdate();
 			if (result == 1)
 				ok = true;
-			System.out.println("INSERT Product: " + result);
 		} catch (SQLIntegrityConstraintViolationException exception) {
 			System.out.println("Error Product! Duplicate entry for PRIMARY KEY on INSERT");
 		} catch (SQLException ex) {
-			System.out.println("Error findByID");
-			ex.printStackTrace();
+			System.out.println("Error INSERT Product!");
 		} finally {
-			System.out.println("SFAFSFSAA");
 			DBConnection.close(connection);
 			DBConnection.close(statement);
 		}
 		return ok;
 	}
 
+	/**
+	 * Metoda salveaza intr-o lista numele produselor
+	 * 
+	 * @return lista cu numele produselor
+	 */
 	public List<String> getNames() {
 		List<String> productsName = new ArrayList<String>();
 		Connection connection = null;
@@ -108,12 +154,11 @@ public class ProductDAC extends AbstractDAC<Product> {
 			while (resultSet.next()) {
 				String name = resultSet.getString("name");
 				productsName.add(name);
-				// System.out.println("NUME : " + name.toString());
 			}
 		} catch (SQLIntegrityConstraintViolationException exception) {
-			System.out.println("Error! Duplicate entry for PRIMARY KEY on INSERT");
+			System.out.println("Error! GetNames");
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			System.out.println("Error! GetNames");
 		} finally {
 			DBConnection.close(connection);
 			DBConnection.close(statement);
@@ -122,12 +167,18 @@ public class ProductDAC extends AbstractDAC<Product> {
 		return productsName;
 	}
 
+	/**
+	 * Metoda cauta ID de produs dupa nume de produs
+	 * 
+	 * @param name este numele produsului
+	 * @return ID de produs
+	 */
 	public int getByNamesID(String name) {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		String query = getByNameID();
-		int ID=0;
+		int ID = 0;
 		connection = DBConnection.getConnection();
 		try {
 			statement = connection.prepareStatement(query);
@@ -136,9 +187,9 @@ public class ProductDAC extends AbstractDAC<Product> {
 			resultSet.next();
 			ID = resultSet.getInt("IDProduct");
 		} catch (SQLIntegrityConstraintViolationException exception) {
-			System.out.println("Error! Duplicate entry for PRIMARY KEY on INSERT");
+			System.out.println("Error! GetByNamesID");
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			System.out.println("Error! GetByNamesID");
 		} finally {
 			DBConnection.close(connection);
 			DBConnection.close(statement);
@@ -146,13 +197,19 @@ public class ProductDAC extends AbstractDAC<Product> {
 		}
 		return ID;
 	}
-	
+
+	/**
+	 * Metoda cauta pretul dupa nume de produs
+	 * 
+	 * @param name este numele produsului
+	 * @return pretul produsului
+	 */
 	public int getByNamesPrice(String name) {
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet resultSet = null;
 		String query = getByNamesPrice();
-		int price=0;
+		int price = 0;
 		connection = DBConnection.getConnection();
 		try {
 			statement = connection.prepareStatement(query);
@@ -161,9 +218,9 @@ public class ProductDAC extends AbstractDAC<Product> {
 			resultSet.next();
 			price = resultSet.getInt("price");
 		} catch (SQLIntegrityConstraintViolationException exception) {
-			System.out.println("Error! Duplicate entry for PRIMARY KEY on INSERT");
+			System.out.println("Error! getByNamesPrice");
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			System.out.println("Error! getByNamesPrice");
 		} finally {
 			DBConnection.close(connection);
 			DBConnection.close(statement);
@@ -172,6 +229,12 @@ public class ProductDAC extends AbstractDAC<Product> {
 		return price;
 	}
 
+	/**
+	 * Metoda cauta cantitatea de produs dupa nume de produs
+	 * 
+	 * @param name este numele produsului
+	 * @return cantitatea de produs
+	 */
 	public int getStockNr(String name) {
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -182,15 +245,13 @@ public class ProductDAC extends AbstractDAC<Product> {
 		try {
 			statement = connection.prepareStatement(query);
 			statement.setString(1, name);
-			System.out.println("SAS " + query);
 			resultSet = statement.executeQuery();
 			resultSet.next();
 			rez = resultSet.getInt("stock");
-			System.out.println("STOCK: " + rez);
 		} catch (SQLIntegrityConstraintViolationException exception) {
-			System.out.println("Error! Duplicate entry for PRIMARY KEY on INSERT");
+			System.out.println("Error! getStockNr");
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			System.out.println("Error! getStockNr");
 		} finally {
 			DBConnection.close(connection);
 			DBConnection.close(statement);
@@ -199,6 +260,13 @@ public class ProductDAC extends AbstractDAC<Product> {
 		return rez;
 	}
 
+	/**
+	 * Metoda face un update pe cantitatea produselor dupa o comanda
+	 * 
+	 * @param newValue este valoarea noua a cantitatii
+	 * @param name     este numele produsului
+	 * @return numarul de randuri in care s-a facut update
+	 */
 	public int stockUpdate(int newValue, String name) {
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -209,30 +277,15 @@ public class ProductDAC extends AbstractDAC<Product> {
 			statement = connection.prepareStatement(query);
 			statement.setInt(1, newValue);
 			statement.setString(2, name);
-			System.out.println("SAS " + query);
 			rezult = statement.executeUpdate();
 		} catch (SQLIntegrityConstraintViolationException exception) {
-			System.out.println("Error! Duplicate entry for PRIMARY KEY on INSERT");
+			System.out.println("Error! StockUpdate");
 		} catch (SQLException ex) {
-			ex.printStackTrace();
+			System.out.println("Error! StockUpdate");
 		} finally {
 			DBConnection.close(connection);
 			DBConnection.close(statement);
 		}
 		return rezult;
 	}
-
-	/*
-	 * public List<Product> getProducts() throws SQLException { Connection
-	 * connection = null; PreparedStatement statement = null; ResultSet resultSet =
-	 * null; String query = getProductsList(); connection =
-	 * DBConnection.getConnection(); List<Product> products = new
-	 * ArrayList<Product>(); try { statement = connection.prepareStatement(query);
-	 * resultSet = statement.executeQuery(); products = createObjects(resultSet); }
-	 * catch (SQLException ex) { System.out.println("Error getProducts");
-	 * ex.printStackTrace(); } finally { DBConnection.close(connection);
-	 * DBConnection.close(statement); DBConnection.close(resultSet); } return
-	 * products; }
-	 */
-
 }

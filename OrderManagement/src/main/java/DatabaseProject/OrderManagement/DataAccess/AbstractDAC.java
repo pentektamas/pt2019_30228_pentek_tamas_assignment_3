@@ -1,21 +1,23 @@
 package DatabaseProject.OrderManagement.DataAccess;
 
-import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import DatabaseProject.OrderManagement.Connection.DBConnection;
 
+/**
+ * 
+ * @author Pentek Tamas
+ *
+ *         Aceasta clasa este un Data Access Class care salveaza date din baza
+ *         de date
+ *
+ * @param <T> este o clasa din pachetul Model
+ */
 public class AbstractDAC<T> {
-
-	private static final Logger LOGGER = Logger.getLogger(AbstractDAC.class.getName());
 
 	private Class<T> type;
 
@@ -23,17 +25,26 @@ public class AbstractDAC<T> {
 	public AbstractDAC() {
 
 		this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-		System.out.println(type.getSimpleName() + "!!!!!!!!!");
+	}
+
+	/**
+	 * metode getter si setter pentru clasa T
+	 */
+	public void setType(Class<T> type) {
+		this.type = type;
 	}
 
 	public Class<T> getType() {
 		return type;
 	}
 
-	public void setType(Class<T> type) {
-		this.type = type;
-	}
-
+	/**
+	 * Metoda creeaza un String care va fi o interogare folosita pentru a accesa
+	 * date folosind o conditie
+	 * 
+	 * @param field este numele coloanei
+	 * @return un String care este o interogare
+	 */
 	private String createQuery(String field) {
 		StringBuilder string = new StringBuilder();
 		string.append("SELECT * FROM ");
@@ -43,6 +54,12 @@ public class AbstractDAC<T> {
 
 	}
 
+	/**
+	 * Metoda creeaza un String care va fi o interogare folosita pentru a accesa
+	 * toate datele din tabel
+	 * 
+	 * @return un String care este o interogare
+	 */
 	private String selectAll() {
 		StringBuilder string = new StringBuilder();
 		string.append("SELECT * FROM ");
@@ -50,14 +67,13 @@ public class AbstractDAC<T> {
 		return string.toString();
 	}
 
-	/*
-	 * private String insertInto(int a,String b,String c,String d,String e) {
-	 * StringBuilder string = new StringBuilder(); string.append("INSERT INTO ");
-	 * string.append(type.getSimpleName()); string.append(" VALUES(");
-	 * string.append(a+", "+b+", "+c+", "+d+", "+e); string.append(");"); return
-	 * string.toString(); }
+	/**
+	 * Metoda creeaza un String care va fi o actualizare in tabel
+	 * 
+	 * @param column    este coloana care vrem sa actualizam
+	 * @param condition este conditia actualizarii
+	 * @return un String care este o actualizare
 	 */
-
 	private String updateRows(String column, String condition) {
 		StringBuilder string = new StringBuilder();
 		string.append("UPDATE ");
@@ -67,10 +83,15 @@ public class AbstractDAC<T> {
 		string.append(" =? ");
 		string.append(" WHERE ");
 		string.append(condition + ";");
-		System.out.println("HULA:" + string);
 		return string.toString();
 	}
 
+	/**
+	 * Metoda creeaza un String care va fi o stergere din tabel
+	 * 
+	 * @param condition este conditia stergerii
+	 * @return un Strring care este o stergere
+	 */
 	private String deleteFrom(String condition) {
 		StringBuilder string = new StringBuilder();
 		string.append("DELETE FROM ");
@@ -80,30 +101,23 @@ public class AbstractDAC<T> {
 		return string.toString();
 	}
 
-	public T findById(int ID, String field) {
-		Connection connection = null;
-		PreparedStatement statement = null;
-		ResultSet resultSet = null;
-		String query = createQuery(field);
-		connection = DBConnection.getConnection();
-		T obj = null;
-		try {
-			statement = connection.prepareStatement(query);
-			statement.setInt(1, ID);
-			resultSet = statement.executeQuery();
-			obj = createObjects(resultSet).get(0);
-		} catch (SQLException e) {
-			System.out.println("Error findByID");
-			e.printStackTrace();
-		} finally {
-			System.out.println("SFAFSFSAA");
-			DBConnection.close(connection);
-			DBConnection.close(statement);
-			DBConnection.close(resultSet);
-		}
-		return obj;
-	}
+	/*
+	 * public T findById(int ID, String field) { Connection connection = null;
+	 * PreparedStatement statement = null; ResultSet resultSet = null; String query
+	 * = createQuery(field); connection = DBConnection.getConnection(); T obj =
+	 * null; try { statement = connection.prepareStatement(query);
+	 * statement.setInt(1, ID); resultSet = statement.executeQuery(); obj =
+	 * createObjects(resultSet).get(0); } catch (SQLException e) {
+	 * System.out.println("Error findByID"); e.printStackTrace(); } finally {
+	 * DBConnection.close(connection); DBConnection.close(statement);
+	 * DBConnection.close(resultSet); } return obj; }
+	 */
 
+	/**
+	 * Metoda salveaza intr-o lista toate datele dintr-un tabel
+	 * 
+	 * @return o lista cu datele din tabel
+	 */
 	public List<T> findAll() {
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -116,10 +130,8 @@ public class AbstractDAC<T> {
 			resultSet = statement.executeQuery();
 			obj = createObjects(resultSet);
 		} catch (SQLException e) {
-			System.out.println("Error findByID");
-			e.printStackTrace();
+			System.out.println("Error findAll");
 		} finally {
-			System.out.println("SFAFSFSAA");
 			DBConnection.close(connection);
 			DBConnection.close(statement);
 			DBConnection.close(resultSet);
@@ -127,18 +139,14 @@ public class AbstractDAC<T> {
 		return obj;
 	}
 
-	/*
-	 * public void insert(int a,String b,String c,String d,String e) throws
-	 * SQLException { Connection connection = null; PreparedStatement statement =
-	 * null; int result = 0; String query = insertInto(a,b,c,d,e); connection =
-	 * DBConnection.getConnection(); try { statement =
-	 * connection.prepareStatement(query); result = statement.executeUpdate(query);
-	 * System.out.println("INSERT: "+result); } catch (SQLException ex) {
-	 * System.out.println("Error findByID"); ex.printStackTrace(); } finally {
-	 * System.out.println("SFAFSFSAA"); DBConnection.close(connection);
-	 * DBConnection.close(statement); } }
+	/**
+	 * Metoda face un update intr-un tabel
+	 * 
+	 * @param column    este coloana care vrem sa actualizam
+	 * @param value     este valoarea cu care vrem sa actualizam
+	 * @param condition este conditia actualizarii
+	 * @return numarul de randuri actualizate in caz de succes, altfel -1
 	 */
-
 	public int update(String column, String value, String condition) {
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -150,15 +158,12 @@ public class AbstractDAC<T> {
 			statement = connection.prepareStatement(query);
 			statement.setString(1, value);
 			result = statement.executeUpdate();
-			System.out.println("UPDATE: " + result);
 			flag = 1;
 		} catch (SQLIntegrityConstraintViolationException exception) {
 			System.out.println("Error! Duplicate VALUE on UPDATE!");
 		} catch (SQLException ex) {
-			System.out.println("Error findByID");
-			ex.printStackTrace();
+			System.out.println("Error on UPDATE!");
 		} finally {
-			System.out.println("SFAFSFSAA");
 			DBConnection.close(connection);
 			DBConnection.close(statement);
 		}
@@ -168,6 +173,13 @@ public class AbstractDAC<T> {
 			return flag;
 	}
 
+	/**
+	 * Metoda face stergerea dintr-un tabel
+	 * 
+	 * @param condition este conditia stergerii
+	 * @return numarul de randuri la care s-a facut delete in caz de succes, altfel
+	 *         -1
+	 */
 	public int delete(String condition) {
 		Connection connection = null;
 		PreparedStatement statement = null;
@@ -179,13 +191,8 @@ public class AbstractDAC<T> {
 			statement = connection.prepareStatement(query);
 			result = statement.executeUpdate();
 			flag = 1;
-			System.out.println("DELETE: " + result);
-		} /*
-			 * catch (SQLIntegrityConstraintViolationException exception) {
-			 * System.out.println("Error! Duplicate VALUE on UPDATE!"); }
-			 */catch (SQLException ex) {
-			System.out.println("Error findByID");
-			ex.printStackTrace();
+		} catch (SQLException ex) {
+			System.out.println("Error on DELETE!");
 		} finally {
 			DBConnection.close(connection);
 			DBConnection.close(statement);
@@ -196,64 +203,70 @@ public class AbstractDAC<T> {
 			return flag;
 	}
 
+	/*
+	 * public String getDate() { Connection connection = null; PreparedStatement
+	 * statement = null; ResultSet resultSet = null; String query =
+	 * "SELECT current_date;"; String date = null; connection =
+	 * DBConnection.getConnection(); try { statement =
+	 * connection.prepareStatement(query); resultSet = statement.executeQuery();
+	 * resultSet.next(); date = resultSet.getString(1); } catch (SQLException ex) {
+	 * System.out.println("Error DATE"); } finally { DBConnection.close(connection);
+	 * DBConnection.close(statement); DBConnection.close(resultSet); } return date;
+	 * }
+	 */
+
+	/**
+	 * Metoda creeaza obiecte din datele aflate in tabel
+	 * 
+	 * @param resultSet sunt datele extrase din tabel
+	 * @return o lista cu obiecte de tip T care contine toate datele din tabel
+	 */
 	@SuppressWarnings("deprecation")
 	private List<T> createObjects(ResultSet resultSet) {
 		List<T> list = new ArrayList<T>();
 		try {
 			while (resultSet.next()) {
 				T instance = type.newInstance();
-				System.out.println("HEYHO" + instance.getClass().getSimpleName());
 				for (Field field : type.getDeclaredFields()) {
-					System.out.println("FIELD" + field.getName());
 					Object value = resultSet.getObject(field.getName());
-					System.out.println("VALUE: " + value);
 					PropertyDescriptor propertyDescriptor = new PropertyDescriptor(field.getName(), type);
 					Method method = propertyDescriptor.getWriteMethod();
-					System.out.println("METODA" + method.getName());
 					method.invoke(instance, value);
 				}
 				list.add(instance);
-				System.out.println(instance.toString());
 			}
 			return list;
-		}
-		/*
-		 * catch(InstantiationException e) { e.printStackTrace(); } catch
-		 * (IllegalAccessException e) { e.printStackTrace(); } catch (SecurityException
-		 * e) { e.printStackTrace(); } catch (IllegalArgumentException e) {
-		 * e.printStackTrace(); } catch (InvocationTargetException e) {
-		 * e.printStackTrace(); } catch (SQLException e) { e.printStackTrace(); } catch
-		 * (IntrospectionException e) { e.printStackTrace(); }
-		 */
-		catch (Exception e) {
+		} catch (Exception e) {
 			System.out.println("Error! CreateObjects returns List<T>");
 		}
 		return null;
 	}
 
+	/**
+	 * Metoda salveaza intr-o lista numele de coloane a tabelului
+	 * 
+	 * @return lista cu numele de coloane
+	 */
 	public List<String> retrieveProperties() {
 		List<String> fieldsList = new ArrayList<String>();
 		for (Field field : this.type.getDeclaredFields()) {
 			fieldsList.add(field.getName());
-			System.out.println("FIELD: " + field.getName());
 		}
-		System.out.println("THIS : " + this.type);
 		return fieldsList;
 	}
 
-	public T retrievePropertiesValues(T object) {
-		T value = null;
-		for (Field field : this.type.getDeclaredFields()) {
-			field.setAccessible(true);
-			try {
-				value = (T) field.get(object);
-				System.out.println(field.getName() + " = " + value);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException ex) {
-				ex.printStackTrace();
-			}
-		}
-		return value;
-	}
+	/*
+	 * /** Metoda salveaza in fieldurile unui obiect de tip T datele aflate intr-un
+	 * rand din tabel
+	 * 
+	 * @param object
+	 * 
+	 * @return un obiect de tip T care contine datele dintr-un rand a tabelului
+	 *
+	 * public T retrievePropertiesValues(T object) { T value = null; for (Field
+	 * field : this.type.getDeclaredFields()) { field.setAccessible(true); try {
+	 * value = (T) field.get(object); } catch (IllegalArgumentException e) {
+	 * e.printStackTrace(); } catch (IllegalAccessException ex) {
+	 * ex.printStackTrace(); } } return value; }
+	 */
 }

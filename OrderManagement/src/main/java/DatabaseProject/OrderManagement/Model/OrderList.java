@@ -1,5 +1,12 @@
 package DatabaseProject.OrderManagement.Model;
 
+/**
+ * 
+ * @author Pentek Tamas
+ * 
+ *         Clasa reprezinta un rand din tabelul Orderlist
+ *
+ */
 public class OrderList {
 
 	private int IDOrder;
@@ -8,6 +15,9 @@ public class OrderList {
 	private int quantity;
 	private int price;
 
+	/**
+	 * Metode getter si setter pentru a accesa si a seta datele
+	 */
 	public int getIDOrder() {
 		return IDOrder;
 	}

@@ -2,17 +2,18 @@ package DatabaseProject.OrderManagement.Presentation;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.*;
 
-import DatabaseProject.OrderManagement.BusinessLayer.ClientOperation;
-import DatabaseProject.OrderManagement.Model.Client;
-
+/**
+ * 
+ * @author Pentek Tamas
+ * 
+ *         Aceasta clasa extinde JFrame si reprezinta fereastra care deschide
+ *         cand vrem sa facem operatii cu tabelul Client
+ *
+ */
 public class ClientWindow extends JFrame {
 
 	private JRadioButton add = new JRadioButton("Add");
@@ -48,8 +49,8 @@ public class ClientWindow extends JFrame {
 		this.setTitle("Client Operations");
 		this.pack();
 		this.setContentPane(p1);
-		this.setSize(new Dimension(600, 400));
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setSize(new Dimension(800, 400));
+		this.setLocation(500, 200);
 		add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				p1.add(insert, BorderLayout.CENTER);
@@ -82,26 +83,12 @@ public class ClientWindow extends JFrame {
 
 		view.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//ClientView viewAll = new ClientView();
 				p1.add(viewAll, BorderLayout.CENTER);
 				insert.setVisible(false);
 				edit.setVisible(false);
 				del.setVisible(false);
 				viewAll.setVisible(true);
-				//ClientView viewAll = new ClientView();
-			//	ClientOperation c=new ClientOperation();
-			//	List<Client> clients=new ArrayList<Client>();
-			//	clients=c.viewAllClients();
-			//	viewAll.createTable(clients);
 			}
 		});
-	}
-
-	public static void displayGoodMessage(String message) {
-		JOptionPane.showMessageDialog(null, message, "Client Operation", JOptionPane.INFORMATION_MESSAGE);
-	}
-
-	public static void displayBadMessage(String message) {
-		JOptionPane.showMessageDialog(null, message, "Client Operation", JOptionPane.ERROR_MESSAGE);
 	}
 }

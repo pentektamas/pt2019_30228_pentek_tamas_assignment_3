@@ -4,14 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.*;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-
+/**
+ * 
+ * @author Pentek Tamas
+ * 
+ *         Aceasta clasa extinde JFrame si reprezinta fereastra care deschide
+ *         cand vrem sa facem operatii cu tabelul Product
+ *
+ */
 public class ProductWindow extends JFrame {
 
 	private JRadioButton add = new JRadioButton("Add");
@@ -48,7 +50,7 @@ public class ProductWindow extends JFrame {
 		this.pack();
 		this.setContentPane(p1);
 		this.setSize(new Dimension(600, 400));
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocation(500, 200);
 		add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				p1.add(insert, BorderLayout.CENTER);
@@ -88,13 +90,5 @@ public class ProductWindow extends JFrame {
 				viewAll.setVisible(true);
 			}
 		});
-	}
-
-	public static void displayGoodMessage(String message) {
-		JOptionPane.showMessageDialog(null, message, "Product Operation", JOptionPane.INFORMATION_MESSAGE);
-	}
-
-	public static void displayBadMessage(String message) {
-		JOptionPane.showMessageDialog(null, message, "Product Operation", JOptionPane.ERROR_MESSAGE);
 	}
 }

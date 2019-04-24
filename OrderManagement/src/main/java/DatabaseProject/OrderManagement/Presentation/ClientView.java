@@ -6,12 +6,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.*;
-
 import DatabaseProject.OrderManagement.BusinessLayer.ClientOperation;
 import DatabaseProject.OrderManagement.Model.Client;
 
+/**
+ * 
+ * @author Pentek Tamas
+ * 
+ *         Aceasta clasa extinde clasa JPanel, creeaza un panel care este
+ *         folosit cand afisam tabelul Client
+ *
+ */
 public class ClientView extends JPanel {
 
 	private JTable clientsTable = new JTable();
@@ -26,6 +32,13 @@ public class ClientView extends JPanel {
 		p1.add(refresh);
 		headers = new ArrayList<String>();
 		headers = cop.getFieldsName();
+		List<Client> clients = cop.viewAllClients();
+		try {
+
+			MainWindow.createTable(clients);
+		} catch (Exception e) {
+			System.out.println("asfsdbxf");
+		}
 		clientsTable = this.createTable(headers);
 		p.add(scrollPane);
 		this.add(p1, BorderLayout.PAGE_START);
@@ -34,10 +47,14 @@ public class ClientView extends JPanel {
 
 	}
 
+	/**
+	 * KSJFSAKLSF:LAKF !!!!!!!!!!!!!!!!!
+	 * 
+	 * @param headers
+	 * @return
+	 */
 	public JTable createTable(List<String> headers) {
 		List<Client> clients = cop.viewAllClients();
-		// List<String> headers = new ArrayList<String>();
-		// headers = cop.getFieldsName();
 		Object[] columnNames = headers.toArray();
 
 		Object[][] object = new Object[clients.size()][headers.size()];
@@ -55,10 +72,13 @@ public class ClientView extends JPanel {
 		}
 		JTable table = new JTable(object, columnNames);
 		scrollPane = new JScrollPane(table);
-		scrollPane.setPreferredSize(new Dimension(580, 400));
+		scrollPane.setPreferredSize(new Dimension(780, 400));
 		return table;
 	}
 
+	/**
+	 * Metoda adauga un listener la butonul Refresh
+	 */
 	public void addRefreshListener() {
 		refresh.addActionListener(new ActionListener() {
 
@@ -68,7 +88,6 @@ public class ClientView extends JPanel {
 				p.add(scrollPane);
 				p.updateUI();
 			}
-
 		});
 	}
 

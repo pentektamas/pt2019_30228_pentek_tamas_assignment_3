@@ -4,13 +4,17 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.*;
-
 import DatabaseProject.OrderManagement.BusinessLayer.ClientOperation;
-import DatabaseProject.OrderManagement.DataAccess.ClientDAC;
-import DatabaseProject.OrderManagement.Model.Client;
 
+/**
+ * 
+ * @author Pentek Tamas
+ * 
+ *         Aceasta clasa extinde clasa JPanel, creeaza un panel care este
+ *         folosit cand stergem clientii
+ *
+ */
 public class ClientDelete extends JPanel {
 
 	private JLabel condition = new JLabel("Insert the condition: ");
@@ -31,26 +35,28 @@ public class ClientDelete extends JPanel {
 		this.addOKListener();
 	}
 
+	/**
+	 * Metoda adauga un listener la butonul OK
+	 */
 	public void addOKListener() {
 		ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ClientOperation clientOp = new ClientOperation();
-				ClientDAC cd = new ClientDAC();
-				Client c = new Client();
-				c.setIDClient(123);
-				cd.retrieveProperties();
-				cd.retrievePropertiesValues(c);
+				// ClientDAC cd = new ClientDAC();
+				// Client c = new Client();
+				// c.setIDClient(123);
+				// cd.retrieveProperties();
+				// cd.retrievePropertiesValues(c);
 				try {
 					String condition = conditionText.getText();
 					int rez = clientOp.deleteClient(condition);
 					if (rez != -1)
-						ClientWindow.displayGoodMessage("Deleted Successfully " + rez + " Field(s)!");
+						MainWindow.displayGoodMessage("Deleted Successfully " + rez + " Field(s)!");
 					else
-						ClientWindow.displayBadMessage("Something Went Wrong!");
+						MainWindow.displayBadMessage("Something Went Wrong!");
 				} catch (NumberFormatException ex) {
-					ClientWindow.displayBadMessage("Please insert correct values!!!");
+					MainWindow.displayBadMessage("Please insert correct values!!!");
 				}
-
 			}
 		});
 	}

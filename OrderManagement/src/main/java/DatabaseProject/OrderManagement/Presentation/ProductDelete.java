@@ -5,13 +5,17 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
+import javax.swing.*;
 import DatabaseProject.OrderManagement.BusinessLayer.ProductOperation;
 
+/**
+ * 
+ * @author Pentek Tamas
+ * 
+ *         Aceasta clasa extinde clasa JPanel, creeaza un panel care este
+ *         folosit cand stergem produsele
+ *
+ */
 public class ProductDelete extends JPanel {
 	private JLabel condition = new JLabel("Insert the condition: ");
 	private JTextField conditionText = new JTextField();
@@ -31,24 +35,22 @@ public class ProductDelete extends JPanel {
 		this.addOKListener();
 	}
 
+	/**
+	 * Metoda adauga un listener la butonul OK
+	 */
 	public void addOKListener() {
 		ok.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ProductOperation productOp = new ProductOperation();
-				// ProductDAC cd = new ProductDAC();
-				// Product p = new Product();
-				// p.setIDClient(123);
-				// cd.retrieveProperties();
-				// cd.retrievePropertiesValues(c);
 				try {
 					String condition = conditionText.getText();
 					int rez = productOp.deleteProduct(condition);
 					if (rez != -1)
-						ClientWindow.displayGoodMessage("Deleted Successfully " + rez + " Field(s)!");
+						MainWindow.displayGoodMessage("Deleted Successfully " + rez + " Field(s)!");
 					else
-						ClientWindow.displayBadMessage("Something Went Wrong!");
+						MainWindow.displayBadMessage("Something Went Wrong!");
 				} catch (NumberFormatException ex) {
-					ClientWindow.displayBadMessage("Please insert correct values!!!");
+					MainWindow.displayBadMessage("Please insert correct values!!!");
 				}
 			}
 		});

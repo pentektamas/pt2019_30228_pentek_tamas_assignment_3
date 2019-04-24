@@ -7,14 +7,18 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-
+import javax.swing.*;
 import DatabaseProject.OrderManagement.BusinessLayer.ProductOperation;
 import DatabaseProject.OrderManagement.Model.Product;
 
+/**
+ * 
+ * @author Pentek Tamas
+ * 
+ *         Aceasta clasa extinde clasa JPanel, creeaza un panel care este
+ *         folosit cand afisam tabelul Product
+ *
+ */
 public class ProductView extends JPanel {
 	private JTable productsTable = new JTable();
 	ProductOperation pop = new ProductOperation();
@@ -36,6 +40,12 @@ public class ProductView extends JPanel {
 
 	}
 
+	/**
+	 * LFHALFKJGJE:JGJEAOGJ !!!!!!!!!!!!!!!!!!!!!!!!!!!!???????????????????????????
+	 * 
+	 * @param headers
+	 * @return
+	 */
 	public JTable createTable(List<String> headers) {
 		List<Product> products = pop.viewAllProducts();
 		Object[] columnNames = headers.toArray();
@@ -56,6 +66,9 @@ public class ProductView extends JPanel {
 		return table;
 	}
 
+	/**
+	 * Metoda adauga un listener la butonul Refresh
+	 */
 	public void addRefreshListener() {
 		refresh.addActionListener(new ActionListener() {
 
@@ -65,8 +78,6 @@ public class ProductView extends JPanel {
 				p.add(scrollPane);
 				p.updateUI();
 			}
-
 		});
 	}
-
 }
